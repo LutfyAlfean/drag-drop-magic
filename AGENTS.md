@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep spreadsheet parsing and LDIF generation in the browser; uploaded directory data must not be sent to a server.
+- Use the shared LDIF module for validation and serialization so preview and downloaded output remain identical.
+- Export inetOrgPerson by default, not posixAccount, because the input lacks required POSIX numeric IDs and home directories.
