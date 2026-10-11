@@ -36,6 +36,9 @@ function Index() {
   const [customPassword, setCustomPassword] = useState('');
   const [outputName, setOutputName] = useState('');
   const [downloaded, setDownloaded] = useState(false);
+  const [hiddenCols, setHiddenCols] = useState<Set<string>>(new Set());
+  const allCols = Object.keys(rows[0] || {});
+  const cols = allCols.filter(col => !hiddenCols.has(col));
   const visible = useMemo(() => rows.map((row, index) => ({ row, index })).filter(({ row }) => (filterColumn === 'all' ? Object.values(row).join(' ') : row[filterColumn] || '').toLowerCase().includes(query.toLowerCase())), [rows, query, filterColumn]);
   const exportRows = visible.filter(({ index, row }) => selected.has(index) && isValidRow(row)).map(({ row }) => row);
   const uniqueCount = new Set(exportRows.map(row => (row.username || '').trim().toLowerCase())).size;
@@ -54,7 +57,7 @@ function Index() {
     if (!firstRow) throw new Error('File kosong.');
     const missing = requiredColumns.filter(key => !(key in firstRow));
     if (missing.length) throw new Error(`Kolom wajib tidak ditemukan: ${missing.join(', ')}.`);
-    setRows(clean); setSelected(new Set(clean.map((_, i) => i))); setSheets(workbook.SheetNames); setSheet(name); setQuery(''); setStep(1); setDownloaded(false);
+    setRows(clean); setSelected(new Set(clean.map((_, i) => i))); setSheets(workbook.SheetNames); setSheet(name); setQuery(''); setStep(1); setDownloaded(false); setHiddenCols(new Set());
   }
   async function loadFile(file?: File) {
     setDragging(false); dragDepth.current = 0;
