@@ -106,3 +106,15 @@ input[type=checkbox] { accent-color: var(--success); width: 14px; height: 14px; 
 @media(max-width: 900px) { .work-grid { grid-template-columns: minmax(0,1fr) 280px; gap: 18px; } .workspace,.header-inner { padding-left: 25px; padding-right: 25px; } }
 @media(max-width: 700px) { .app-header { height: 70px; } .workspace { padding: 28px 18px; } .header-inner { padding: 0 18px; } .brand-name { font-size: 23px; } .brand-symbol { font-size: 14px; } .page-title { font-size: 28px; } .work-grid { grid-template-columns: minmax(0,1fr); } .workflow { gap: 9px; margin: 25px 0; } .workflow-line { flex: 1; width: 15px; } .workflow-step { font-size: 10px; gap: 6px; } .upload-panel { padding: 18px; } .upload-bottom { flex-wrap: wrap; } .header-caption { display: none; } .workspace-footer { gap: 14px; flex-wrap: wrap; } .privacy-band { font-size: 10px; } }
 @media(prefers-reduced-motion: no-preference) { .file-art { animation: arrive .5s ease-out; } @keyframes arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } } }
+
+/* Column picker */
+.col-picker { position: relative; }
+.col-picker > summary { list-style: none; cursor: pointer; user-select: none; white-space: nowrap; }
+.col-picker > summary::-webkit-details-marker { display: none; }
+.col-picker[open] > summary { outline: 2px solid var(--primary); outline-offset: -2px; }
+.col-picker-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; min-width: 180px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 24px rgb(0 0 0 / 0.12); padding: 6px; display: flex; flex-direction: column; gap: 2px; }
+.col-picker-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: calc(var(--radius) - 4px); font-size: 12px; cursor: pointer; }
+.col-picker-item:hover { background: var(--muted); }
+
+/* Keep large tables fast: render rows lazily while scrolling */
+.data-table tbody tr { content-visibility: auto; contain-intrinsic-size: auto 37px; }
