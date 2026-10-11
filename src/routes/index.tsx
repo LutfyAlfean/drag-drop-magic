@@ -38,7 +38,7 @@ function Index() {
   const [downloaded, setDownloaded] = useState(false);
   const visible = useMemo(() => rows.map((row, index) => ({ row, index })).filter(({ row }) => (filterColumn === 'all' ? Object.values(row).join(' ') : row[filterColumn] || '').toLowerCase().includes(query.toLowerCase())), [rows, query, filterColumn]);
   const exportRows = visible.filter(({ index, row }) => selected.has(index) && isValidRow(row)).map(({ row }) => row);
-  const uniqueCount = new Set(exportRows.map(row => row.username.trim().toLowerCase())).size;
+  const uniqueCount = new Set(exportRows.map(row => (row.username || '').trim().toLowerCase())).size;
   const ldif = generateLdif(exportRows, { baseDn, ou, passwordMode, customPassword });
   const configValid = validBaseDn(baseDn) && (passwordMode !== 'custom' || Boolean(customPassword));
 
@@ -50,7 +50,9 @@ function Index() {
     const raw = XLSX.utils.sheet_to_json<Record<string, unknown>>(workbook.Sheets[name], { defval: '', raw: false });
     if (!raw.length) throw new Error('File kosong. Tambahkan data pengguna terlebih dahulu.');
     const clean: DataRow[] = raw.map(row => Object.fromEntries(Object.entries(row).map(([key, value]) => [key.replace(/^\uFEFF/, '').trim().toLowerCase(), String(value).trim()])));
-    const missing = requiredColumns.filter(key => !(key in clean[0]));
+    const firstRow = clean[0];
+    if (!firstRow) throw new Error('File kosong.');
+    const missing = requiredColumns.filter(key => !(key in firstRow));
     if (missing.length) throw new Error(`Kolom wajib tidak ditemukan: ${missing.join(', ')}.`);
     setRows(clean); setSelected(new Set(clean.map((_, i) => i))); setSheets(workbook.SheetNames); setSheet(name); setQuery(''); setStep(1); setDownloaded(false);
   }
