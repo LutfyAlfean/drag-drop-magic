@@ -1,4 +1,4 @@
 # Roadmap
-- [ ] Build Condif drag-and-drop CSV/Excel import.
-- [ ] Add data filtering, LDAP settings, preview, and LDIF download.
-- [ ] Verify conversion and upload interactions.
+- [x] Build Condif drag-and-drop CSV/Excel import.
+- [x] Add data filtering, LDAP settings, preview, and LDIF download.
+- [x] Verify conversion and upload interactions.
